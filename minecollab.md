@@ -1,227 +1,277 @@
-# MineCollab & Running tasks
+# MineCollab - Benchmark Framework
 
-## Getting started with basic tasks
+**Task evaluation and autonomous agent testing framework for CraftVN**
 
-To run a task you will first need to follow the setup instructions on the main README. Then you will need to do the following: 
+[English](#english) | [Tiếng Việt](#tiếng-việt)
 
-1. Install Minecraft (or a bootleg version you can use at your own risk)
-2. Launch the supported Minecraft version from the main README
-3. Open the world to LAN at 55916 
-4. To run a simple task that involves collecting 4 oak_logs run 
-`node main.js --task_path tasks/basic/single_agent.json --task_id gather_oak_logs`
+---
 
-Here is an example task json format: 
+## English
 
+### Overview
+
+MineCollab is a comprehensive benchmark for evaluating multi-agent collaboration, communication, and task completion in Minecraft environments. The framework provides three distinct task categories with varying complexity levels.
+
+### Quick Start
+
+```bash
+# Basic single-agent task
+node main.js --task_path tasks/basic/single_agent.json --task_id gather_oak_logs
+
+# Multi-agent cooking task
+python tasks/evaluation_script.py \
+  --no_launch_world \
+  --template_profile profiles/tasks/cooking_profile.json \
+  --task_path tasks/cooking_tasks/basic/1_agent.json \
+  --num_agents 1
 ```
+
+### Task Structure
+
+All tasks follow this JSON format:
+
+```json
 {
-    "gather_oak_logs": {
-      "goal": "Collect at least four logs",
-      "initial_inventory": {
-        "0": {
-          "wooden_axe": 1
-        }
-      },
-      "agent_count": 1,
-      "target": "oak_log",
-      "number_of_target": 4,
-      "type": "techtree",
-      "max_depth": 1,
-      "depth": 0,
-      "timeout": 300,
-      "blocked_actions": {
-        "0": [],
-        "1": []
-      },
-      "missing_items": [],
-      "requires_ctable": false
-    }
+  "task_name": {
+    "goal": "Description of objective",
+    "agent_count": 1,
+    "target": "target_item",
+    "number_of_target": 4,
+    "initial_inventory": {
+      "0": { "item_name": 1 }
+    },
+    "timeout": 300,
+    "type": "basic",
+    "blocked_actions": { "0": [] },
+    "requires_ctable": false
+  }
 }
 ```
 
-The `initial_inventory` is what the bot will have at the start of the episode, `target` refers to the target item and `number_of_target` refers to the number of target items the agent needs to collect to successfully complete the task. 
+- **goal**: Objective description
+- **initial_inventory**: Starting items for each agent
+- **target/number_of_target**: Item collection goal
+- **timeout**: Seconds before task abandonment
+- **agent_count**: Number of agents participating
 
-If the agent successfully completes the task it will leave the game, otherwise it will leave the game after 300 seconds (specified in the `timeout` variable) 
+### Task Categories
 
-## Minecollab Benchmark
+#### 1. Gathering
 
-> Note: This project has been significantly customized and modified from its original version.
+Simple item collection tasks. Agents gather resources from the environment.
 
-MineCollab is a versatile benchmark for assessing the embodied and collaborative communication abilities of agents across three unique types of tasks. 
-
-## Existing Task Types
-
-### Cooking
-At the beginning of a cooking task episode, the agents are initialized with a goal to make a meal, e.g. they need to make cake and bread.
-The agents then need to coordinate the collection of ingredients through natural language communication (e.g. Andy collects wheat for the bread while Jill makes the cake) and combine them in a multi-step plan. 
-To assist them in collecting resources, agents are placed in a "cooking world" that possesses all of the items they need to complete the task, from livestock, to crops, to a smoker, furnace, and crafting table.
-Following a popular test of collaboration in humans, we further introduce a ``Hell's Kitchen'' variant of the cooking tasks where each agent is given the recipes for a small subset of the items they need to cook and must communicate the instructions with the other teammates.
-For example, if the task is to make a baked potato and a cake, one agent is given recipe for baked potato, but is required to bake the cake to complete the task, forcing them to ask their teammate for help in baking the potato.
-Agents are evaluated on whether are successfully able to complete the set requirements to make the recipes.
-The environment and objectives of the tasks are randomized every episode.
-
-You can view the cooking task in action [here](https://www.youtube.com/shorts/FbNJ3cR_RWY).
-
-### Construction
-
-In the construction tasks, agents are directed to build structures from procedurally generated blueprints.
-Blueprints can also be downloaded from the internet and read into our blueprint format - enabling agents to build anything from pyramids to the Eiffel Tower. 
-We choose evaluate primarily on our generated blueprints as they provide fine-grained control over task complexity, allowing us to systematically vary the depth of collaboration required---e.g. number of rooms in the interior of palace, or the amount and types of materials required for each room.
-At the beginning of each episode, agents are initialized with the blueprint, materials (e.g. stone, wood, doors, carpets) in such a way that no agent has the full resources or the expertise in terms of the types of tools that can be used to process the resources and complete the entire blueprint.
-For example, if the blueprint required a stone base and a wooden roof, one agent would be given access and the ability to manipulate stone, the other to wood.
-Agents are evaluated via an edit distance based metric that judges how close their constructed building is to the blueprint and the metric reported is the average of those edit distance scores.
-
-You can view the construction task in action [here](https://www.youtube.com/shorts/vuBycbn35Rw)
-
-### Crafting 
-
-Crafting has long been the subject of Minecraft agent research---our crafting tasks encompass the entire breadth of items that are craftable in Minecraft including clothing, furniture, and tools.  
-At the beginning of each episode, the agents are initialized with a goal (e.g. make a bookshelf), different sets of resources (e.g. books and planks), and access to a crafting recipe, that is occasionally blocked.
-To complete the task, the agents must: (1) communicate with each other what items are in their inventory; (2) share with each other the crafting recipe if necessary; and (3) give each other resources to successfully craft the item.
-To make the crafting tasks more challenging, agents are given longer crafting objectives (e.g. crafting a compass which requires multiple steps).
-%They are required to coordinate their actions by communicating their plans with each other as no
-%we introduce longer crafting recipes (e.g. crafting a compass), and require the agents to communicate the plan to each other.
-Once again, each of these components can be controlled to procedurally generate tasks.
-
-You can view the crafting task in action [here](https://www.youtube.com/shorts/VMAyxwMKiBc).
-
-
-## Installation 
-
-You **DO NOT** need Linux to run this, you can run on Windows with the --no-launch-world flag and by installing git bash. 
-
-Please follow the installation docs in the README to install mindcraft. You can create a docker image using the Dockerfile. `Join Server`
-
-If you don't own Minecraft, you can run a limited version solely for offline games using these instructions:
-
-> [!Warning]
-Unofficial offline launchers (e.g., TLauncher, Prism Launcher or forks of community launchers) are not endorsed by this project and may be unsafe or contain malware. Use them at your own risk.  
-For guaranteed safety, please [purchase the game](https://www.minecraft.net/) and use the official launcher.
-
-1. Download the [Prism Launcher](https://github.com/Diegiwg/PrismLauncher-Cracked).
-2. Add an offline account with your username and create a [Minecraft 1.21.1 instance](https://prismlauncher.org/wiki/help-pages/vanilla-platform/).
-3. Launch the created instance.
-4. Click **Multiplayer** and then **Direct Connection**.
-5. Enter `localhost:55916` and hit **Join Server**.
-
-Download the relevant task files and server data files, you can find the link [here](https://drive.google.com/drive/folders/1XygbitBBTsNO6q_doEiZHmdETpnyRmCS). The tasks files are for specifying the tasks to run and the server data is for allowing the models to launch the task in the correct world automatically. **Unzip the server_data.zip in the base `tasks/` folder**.
-
-Then, set up your conda environment: 
-
-```
-conda create --name mindcraft python=3.11
-conda activate mindcraft
-pip install -r requirements.txt
+```bash
+node main.js --task_path tasks/basic/single_agent.json --task_id gather_oak_logs
 ```
 
-Then, you can run the evaluation_script **from the project root** using `python tasks/evaluation_script.py --task_path {your-task-path} --model {model you want to use}`. 
+#### 2. Cooking
 
-### Tmux Installation
-**MacOS**: 
-1. If brew isn't already installed run `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
-2. `brew install tmux`
+Multi-step food preparation with ingredient coordination.
 
-**Linux**: `apt-get -y install tmux`
+**Features**:
+- Agent collaboration on recipe assembly
+- Natural language communication
+- Multi-step crafting chains
+- "Hell's Kitchen" variant: partial recipe knowledge requiring communication
 
-**Windows**: You can not use tmux on Windows, but you can run tasks with the --no-launch-world flag. Run
-```
-cd /tasks/server_data/
-java -jar server.jar
-```
-
-If you want to run with vllm be sure to run with `--api vllm --url {your_url_for_vllm} --model {model_name}`, by default vllm will use http://127.0.0.1:8000/v1 as the url for quering the model!
-
-When running with construction tasks, make sure to set the flag `--insecure_coding` so that the agents can be allowed to write freeform javascript code to complete the tasks. However, when using insecure coding it is **highly recommended** to use a docker container to avoid damage to your computer. 
-
-When running an experiment that requires more than 2 agents, use the `--num_agents` flag to match the number of agents in your task file. For example, if you are running a task file with 3 agents, use `--num_agents 3`. 
-
-Similarly, match the default prompt profile to the type of task. If you are running a crafting task use `--template_profile profiles/tasks/crafting_profile.json` to set that as the default profile. Similar for cooking and construction tasks. 
-
-In summary, to run two and three agent tasks on crafting  on gpt-4o-mini you would run 
-
-```
-python tasks/evaluation_script.py --task_path tasks/crafting_tasks/test_tasks/2_agent.json --model gpt-4o-mini --template_profile profiles/tasks/crafting_profile.json
-
-python tasks/evaluation_script.py --task_path tasks/crafting_tasks/test_tasks/filtered_tasks_3_agents.json --model gpt-4o-mini --template_profile profiles/tasks/crafting_profile --num_agents 3
+**Example**:
+```bash
+python tasks/evaluation_script.py \
+  --template_profile profiles/tasks/cooking_profile.json \
+  --task_path tasks/cooking_tasks/basic/2_agent.json \
+  --num_agents 2 \
+  --usernames player1 player2
 ```
 
-For cooking and construction 
+#### 3. Construction
 
+Procedurally generated or downloaded blueprint building.
+
+**Features**:
+- Complex multi-room structures
+- Material specialization per agent
+- Tool and resource constraints
+- Edit-distance based evaluation
+
+**Example**:
+```bash
+python tasks/evaluation_script.py \
+  --template_profile profiles/tasks/construction_profile.json \
+  --task_path tasks/construction_tasks/basic/1_agent.json \
+  --num_agents 1 \
+  --insecure_coding  # Required for construction tasks
 ```
-python tasks/evaluation_script.py --task_path {path_to_two_agent_cooking_tasks} --model gpt-4o-mini --template_profile profiles/tasks/cooking_profile.json 
 
-python tasks/evaluation_script.py --task_path {path_to_two_agent_construction_tasks} --model gpt-4o-mini --template_profile profiles/tasks/construction_profile.json --insecure_coding
+#### 4. Crafting
+
+Tool and equipment crafting with dependencies.
+
+**Features**:
+- Single and multi-step recipes
+- Inventory coordination
+- Resource sharing
+- Tool specialization
+
+**Example**:
+```bash
+python tasks/evaluation_script.py \
+  --template_profile profiles/tasks/crafting_profile.json \
+  --task_path tasks/crafting_tasks/basic/1_agent.json \
+  --num_agents 1
 ```
 
-When you launch the evaluation script, you will see the minecraft server being launched. If you want to join this world, you can connect to it on the port localhost:55916 the way you would a standard Minecraft world (go to single player -> direct connection -> type in localhost:55916) It may take a few minutes for everything to be properly loaded - as first the agents need to be added to the world and given the correct permissions to use cheats and add inventory. After about 5 minutes everything should be loaded and working. If you wish to kill the experiment run `tmux kill-server`. Sometimes there will be issues copying the files, if this happens you can run the python file twice. 
+### Running Evaluation
 
-## Windows Installation (without tmux)
-
-If you are on a machine that can't run tmux (like a Windows PC without WSL) or you don't care about doing evaluations only running tasks you can run the following script 
-
+```bash
+python tasks/evaluation_script.py \
+  --task_path <task_file> \
+  --template_profile <profile> \
+  --num_agents <count> \
+  --usernames <username1> <username2> ... \
+  --no_launch_world    # Skip auto-launch \
+  --insecure_coding    # Allow code execution for construction tasks
 ```
-python tasks/run_task_file.py --task_path=tasks/single_agent/crafting_train.json
+
+### Performance Metrics
+
+Tasks are evaluated based on:
+- **Completion**: Did the agent finish the objective?
+- **Time Efficiency**: How long did it take?
+- **Resource Usage**: Were resources used optimally?
+- **Communication**: Did agents coordinate effectively (multi-agent)?
+
+---
+
+## Tiếng Việt
+
+### Tổng Quan
+
+MineCollab là một benchmark toàn diện để đánh giá cộng tác đa agent, giao tiếp và hoàn thành nhiệm vụ trong môi trường Minecraft. Framework cung cấp ba thể loại nhiệm vụ khác nhau với các mức độ phức tạp khác nhau.
+
+### Bắt Đầu Nhanh
+
+```bash
+# Tác vụ đơn agent cơ bản
+node main.js --task_path tasks/basic/single_agent.json --task_id gather_oak_logs
+
+# Tác vụ nấu ăn đa agent
+python tasks/evaluation_script.py \
+  --no_launch_world \
+  --template_profile profiles/tasks/cooking_profile.json \
+  --task_path tasks/cooking_tasks/basic/1_agent.json \
+  --num_agents 1
 ```
 
-## Using the Evaluation Script
+### Cấu Trúc Tác Vụ
 
-When you launch with `python evaluation_script.py` a Minecraft server will be launched in the `server_0` tmux shell, while in the `0` tmux shell the `node main.js` command will be run. You can view the exact bash shell that is being created and executed in the `tmp/` directory. 
+Tất cả các tác vụ tuân theo định dạng JSON này:
 
-### Evaluating Results 
-
-As you run, the evalaution script will evaluate the performance so far. It will also log all of the results you have collected into an experiments/ folder with entries like experiments/exp_04-21_16-16/results.txt which will contain the results of your experiments after you have finished running them. Furthermore it will contain individual task folders and the `memory.json` for each agent when the task ended. The `memory.json` is not the complete conversation, it is only the last 15 messages before the task terminated, as well as a message saying `Task ended with score: ` to report the score when the task ended. For crafting and cooking this score will be 0 or 1, for construction it will be a decimal representing the edit distance from the true blueprint.
-
-### Running multiple worlds in parallel
-
-You can use `--num_parallel` to run multiple Minecraft worlds in parallel. This will launch `n` tmux shells, called `server_i` and shell `i`, where `i` corresponds to ith parallel world. It will also copy worlds into `server_data_i` as well. On an M3 Mac with 34 GB of RAM, we can normally support up to 4 parallel worlds. When running an open source model, it is more likely you will be constrained by the throughput and size of your GPU RAM. On a cluster of 8 H100s you can expect to run 4 experiments in parallel. However, for best performance it is advisable to only use one parallel world. 
-
-### Using an S3 Bucket to store files 
-To use S3 set the --s3 flag and the --bucket_name to use an s3 bucket to log all the files collected. It will also copy the /bots folder in this case with all of the files in there. 
-
-## Understanding Task Json
-
-This is an example task json from the crafting tasks file. 
-
-```
-"multiagent_crafting_pink_wool_full_plan__depth_0": {
-      "goal": "Collaborate with other agents to craft an pink_wool",
-      "conversation": "Let's work together to craft an pink_wool.",
-      "initial_inventory": {
-        "0": {
-          "pink_dye": 1
-        },
-        "1": {
-          "black_wool": 1
-        }
-      },
-      "agent_count": 2,
-      "target": "pink_wool",
-      "number_of_target": 1,
-      "type": "techtree",
-      "max_depth": 1,
-      "depth": 0,
-      "timeout": 300,
-      "blocked_actions": {
-        "0": [],
-        "1": []
-      },
-      "missing_items": [],
-      "requires_ctable": false
+```json
+{
+  "task_name": {
+    "goal": "Mô tả mục tiêu",
+    "agent_count": 1,
+    "target": "target_item",
+    "number_of_target": 4,
+    "initial_inventory": {
+      "0": { "item_name": 1 }
     },
+    "timeout": 300,
+    "type": "basic",
+    "blocked_actions": { "0": [] },
+    "requires_ctable": false
+  }
+}
 ```
 
-The "initial inventory" specifies what items will be given to the agents when they spawn in the world. The "target" indicates what the goal item is, while the "type" indicates that this a techtree or crafting task. Blocked actions specifies what actions are blocked and the timeout specifies the number of seconds until the agents run out of time to complete the task. 
+- **goal**: Mô tả mục tiêu
+- **initial_inventory**: Các mục bắt đầu cho mỗi agent
+- **target/number_of_target**: Mục tiêu thu thập mục
+- **timeout**: Giây trước khi tác vụ bị bỏ
+- **agent_count**: Số lượng agent tham gia
 
-## Creating New Tasks
+### Các Thể Loại Tác Vụ
 
-To create a new task, you simply need to set the initial inventory and the target item. For construction tasks, you can set a new blueprint. See examples of those in tasks/construction_tasks/
+#### 1. Thu Thập
 
-To create a task that relies on neither an inventory check or a blueprint check, you will need to design you own evaluation function. The examples for our existing evaluation functions can be found in src/agent/tasks/cooking_tasks.js CookingTaskValidator. For any further questions please contact me at i2white@ucsd.edu. 
+Các tác vụ thu thập mục dễ dàng. Agents thu thập tài nguyên từ môi trường.
 
-## Creating New Worlds 
+```bash
+node main.js --task_path tasks/basic/single_agent.json --task_id gather_oak_logs
+```
 
-To add new worlds to the minecraft environment beyond the base Forest and Superflat worlds we have created, please (1) create a world in your version of Minecraft then (2) copy the world files into the server_data folder and (3) set server.properties file level-name to be the same as the name of the world you created. 
+#### 2. Nấu Ăn
 
-## Evaluating New Models
+Chuẩn bị thực phẩm đa bước với phối hợp nguyên liệu.
 
-To evaluate a new model on our tasks, please refer to the instructions on main README for adding models. If the model can be hosted through vllm, consider using the --vllm flag and instructions above for running that.
+**Tính Năng**:
+- Cộng tác agent trên lắp ráp công thức
+- Giao tiếp bằng ngôn ngữ tự nhiên
+- Chuỗi crafting đa bước
+- Biến thể "Hell's Kitchen": kiến thức công thức một phần yêu cầu giao tiếp
 
+**Ví Dụ**:
+```bash
+python tasks/evaluation_script.py \
+  --template_profile profiles/tasks/cooking_profile.json \
+  --task_path tasks/cooking_tasks/basic/2_agent.json \
+  --num_agents 2 \
+  --usernames player1 player2
+```
+
+#### 3. Xây Dựng
+
+Xây dựng blueprint được tạo bằng thủ tục hoặc tải xuống.
+
+**Tính Năng**:
+- Các cấu trúc phòng phức tạp
+- Chuyên biệt hóa vật liệu cho mỗi agent
+- Ràng buộc công cụ và tài nguyên
+- Đánh giá dựa trên khoảng cách chỉnh sửa
+
+**Ví Dụ**:
+```bash
+python tasks/evaluation_script.py \
+  --template_profile profiles/tasks/construction_profile.json \
+  --task_path tasks/construction_tasks/basic/1_agent.json \
+  --num_agents 1 \
+  --insecure_coding  # Cần thiết cho các tác vụ xây dựng
+```
+
+#### 4. Crafting
+
+Crafting công cụ và thiết bị với các phụ thuộc.
+
+**Tính Năng**:
+- Công thức đơn bước và đa bước
+- Phối hợp kho hàng
+- Chia sẻ tài nguyên
+- Chuyên biệt hóa công cụ
+
+**Ví Dụ**:
+```bash
+python tasks/evaluation_script.py \
+  --template_profile profiles/tasks/crafting_profile.json \
+  --task_path tasks/crafting_tasks/basic/1_agent.json \
+  --num_agents 1
+```
+
+### Chạy Đánh Giá
+
+```bash
+python tasks/evaluation_script.py \
+  --task_path <task_file> \
+  --template_profile <profile> \
+  --num_agents <count> \
+  --usernames <username1> <username2> ... \
+  --no_launch_world    # Bỏ qua tự động khởi chạy
+  --insecure_coding    # Cho phép thực thi code cho các tác vụ xây dựng
+```
+
+### Các Chỉ Số Hiệu Suất
+
+Các tác vụ được đánh giá dựa trên:
+- **Hoàn Thành**: Agent có hoàn thành mục tiêu không?
+- **Hiệu Quả Thời Gian**: Mất bao lâu?
+- **Sử Dụng Tài Nguyên**: Tài nguyên có được sử dụng tối ưu không?
+- **Giao Tiếp**: Các agent có phối hợp hiệu quả không (đa agent)?

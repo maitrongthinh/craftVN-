@@ -1,232 +1,109 @@
-<h1 align="center">🧠craftVN⛏️</h1>
+# 🧠 CraftVN ⛏️
 
-<p align="center">AI-powered Minecraft bot with advanced LLM integration and <a href="https://prismarinejs.github.io/mineflayer/#/">Mineflayer</a></p>
+> **AI-Powered Minecraft Bot with Advanced LLM Integration**
 
-<p align="center">
-  <a href="FAQ.md">FAQ</a> | 
-  <a href="settings.js">Configuration Guide</a> | 
-  <a href="BOT_GUIDE.md">Bot Guide</a> | 
-  <a href="minecollab.md">MineCollab</a>
-</p>
+[English](#english) | [Tiếng Việt](#tiếng-việt)
+
+---
+
+## English
+
+**CraftVN** is a sophisticated AI agent framework that enables autonomous Minecraft gameplay through advanced language model integration. The system combines real-time environmental perception, task planning, and adaptive behavior to accomplish complex objectives.
+
+### 📚 Documentation
+
+- 📖 [Bot Guide](BOT_GUIDE.md) | [Hướng Dẫn Bot](BOT_GUIDE.md#tiếng-việt)
+- ❓ [FAQ](FAQ.md) | [FAQs](FAQ.md#tiếng-việt)  
+- 🎯 [MineCollab Benchmark](minecollab.md)
+- ⚙️ [Configuration](settings.js)
+- 📋 [Development Rules](AGENT_RULES.md)
 
 > [!Caution]
-Do not connect this bot to public servers with coding enabled. This project allows an LLM to write/execute code on your computer. The code is sandboxed, but still vulnerable to injection attacks. Code writing is disabled by default, you can enable it by setting `allow_insecure_coding` to `true` in `settings.js`. Ye be warned.
+> **Security Notice**: Do not connect to untrusted servers with `allow_insecure_coding: true`. Code execution is **disabled by default** for safety.
 
-# Getting Started
-## Requirements
-
-- [Minecraft Java Edition](https://www.minecraft.net/en-us/store/minecraft-java-bedrock-edition-pc) (up to v1.21.6, recommend v1.21.6)
-- [Node.js Installed](https://nodejs.org/) (Node v18 or v20 LTS recommended. Node v24+ may cause issues with native dependencies)
-- At least one API key from a supported API provider. See [supported APIs](#model-customization). OpenAI is the default.
-
-> [!Important]
-> If installing node on windows, ensure you check `Automatically install the necessary tools`
->
-> If you encounter `npm install` errors on macOS, see the [FAQ](FAQ.md#common-issues) for troubleshooting native module build issues
-
-## Install and Run
-
-1. Make sure you have the requirements above.
-
-2. Clone or download the repository.
-
-3. Rename `keys.example.json` to `keys.json` and fill in your API keys (you only need one). The desired model is set in `andy.json` or other profiles. For other models refer to the table below.
-
-4. In terminal/command prompt, run `npm install` from the installed directory
-
-5. Start a minecraft world and open it to LAN on localhost port `55916`
-
-6. Run `node main.js` from the installed directory
-
-If you encounter issues, check the [FAQ](FAQ.md) or refer to the [Bot Guide](BOT_GUIDE.md). To run tasks please refer to [Minecollab Instructions](minecollab.md#installation)
-
-
-# Configuration
-## Model Customization
-
-You can configure project details in `settings.js`. [See file.](settings.js)
-
-You can configure the agent's name, model, and prompts in their profile like `andy.json`. The model can be specified with the `model` field, with values like `model: "gemini-2.5-pro"`. You will need the correct API key for the API provider you choose. See all supported APIs below.
-
-<details>
-<summary><strong>⭐ VIEW SUPPORTED APIs ⭐</strong></summary>
-
-| API Name | Config Variable| Docs |
-|------|------|------|
-| `openai` | `OPENAI_API_KEY` | [docs](https://platform.openai.com/docs/models) |
-| `google` | `GEMINI_API_KEY` | [docs](https://ai.google.dev/gemini-api/docs/models/gemini) |
-| `anthropic` | `ANTHROPIC_API_KEY` | [docs](https://docs.anthropic.com/claude/docs/models-overview) |
-| `xai` | `XAI_API_KEY` | [docs](https://docs.x.ai/docs) |
-| `deepseek` | `DEEPSEEK_API_KEY` | [docs](https://api-docs.deepseek.com/) |
-| `ollama` (local) | n/a | [docs](https://ollama.com/library) |
-| `qwen` | `QWEN_API_KEY` | [Intl.](https://www.alibabacloud.com/help/en/model-studio/developer-reference/use-qwen-by-calling-api)/[cn](https://help.aliyun.com/zh/model-studio/getting-started/models) |
-| `mistral` | `MISTRAL_API_KEY` | [docs](https://docs.mistral.ai/getting-started/models/models_overview/) |
-| `replicate` | `REPLICATE_API_KEY` | [docs](https://replicate.com/collections/language-models) |
-| `groq` (not grok) | `GROQCLOUD_API_KEY` | [docs](https://console.groq.com/docs/models) |
-| `huggingface` | `HUGGINGFACE_API_KEY` | [docs](https://huggingface.co/models) |
-| `novita` | `NOVITA_API_KEY` | [docs](https://novita.ai/model-api/product/llm-api?utm_source=github_mindcraft&utm_medium=github_readme&utm_campaign=link) |
-| `openrouter` | `OPENROUTER_API_KEY` | [docs](https://openrouter.ai/models) |
-| `glhf` | `GHLF_API_KEY` | [docs](https://glhf.chat/user-settings/api) |
-| `hyperbolic` | `HYPERBOLIC_API_KEY` | [docs](https://docs.hyperbolic.xyz/docs/getting-started) |
-| `vllm` | n/a | n/a |
-| `cerebras` | `CEREBRAS_API_KEY` | [docs](https://inference-docs.cerebras.ai/introduction) |
-| `mercury` | `MERCURY_API_KEY` | [docs](https://www.inceptionlabs.ai/) |
-
-</details>
-
-For more comprehensive model configuration and syntax, see [Model Specifications](#model-specifications).
-
-For local models we support [ollama](https://ollama.com/) and we provide our own finetuned models for you to use. 
-To install our models, install ollama and run the following terminal command:
-```bash
-ollama pull sweaterdog/andy-4:micro-q8_0 && ollama pull embeddinggemma
-```
-
-## Online Servers
-To connect to online servers your bot will need an official Microsoft/Minecraft account. You can use your own personal one, but will need another account if you want to connect too and play with it. To connect, change these lines in `settings.js`:
-```javascript
-"host": "111.222.333.444",
-"port": 55920,
-"auth": "microsoft",
-
-// rest is same...
-```
-> [!Important]
-> The bot's name in the profile.json must exactly match the Minecraft profile name! Otherwise the bot will spam talk to itself.
-
-To use different accounts, the bot will connect with the account that the Minecraft launcher is currently using. You can switch accounts in the launcher, then run `node main.js`, then switch to your main account after the bot has connected.
-
-## Tasks
-
-Tasks automatically start the bot with a prompt and a goal item to aquire or blueprint to construct. To run a simple task that involves collecting 4 oak_logs run 
-
-`node main.js --task_path tasks/basic/single_agent.json --task_id gather_oak_logs`
-
-Here is an example task json format: 
-
-```
-{
-    "gather_oak_logs": {
-      "goal": "Collect at least four logs",
-      "initial_inventory": {
-        "0": {
-          "wooden_axe": 1
-        }
-      },
-      "agent_count": 1,
-      "target": "oak_log",
-      "number_of_target": 4,
-      "type": "techtree",
-      "max_depth": 1,
-      "depth": 0,
-      "timeout": 300,
-      "blocked_actions": {
-        "0": [],
-        "1": []
-      },
-      "missing_items": [],
-      "requires_ctable": false
-    }
-}
-```
-
-The `initial_inventory` is what the bot will have at the start of the episode, `target` refers to the target item and `number_of_target` refers to the number of target items the agent needs to collect to successfully complete the task. 
-
-If you want more optimization and automatic launching of the minecraft world, you will need to follow the instructions in [Minecollab Instructions](minecollab.md#installation)
-
-## Docker Container
-
-If you intend to `allow_insecure_coding`, it is a good idea to run the app in a docker container to reduce risks of running unknown code. This is strongly recommended before connecting to remote servers, although still does not guarantee complete safety.
+### ⚡ Quick Start
 
 ```bash
-docker build -t craftVN . && docker run --rm --add-host=host.docker.internal:host-gateway -p 8080:8080 -p 3000-3003:3000-3003 -e SETTINGS_JSON='{"auto_open_ui":false,"profiles":["./profiles/andy.json"],"host":"host.docker.internal"}' --volume ./keys.json:/app/keys.json --name craftVN craftVN
+# 1. Install dependencies
+npm install
+
+# 2. Configure API keys
+cp keys.example.json keys.json
+# Edit keys.json with your LLM provider credentials
+
+# 3. Start Minecraft on localhost:55916 (LAN)
+
+# 4. Run the agent
+node main.js
 ```
-or simply
+
+### 🎯 Features
+
+- ✅ Support for 15+ LLM providers (OpenAI, Claude, Gemini, Groq, DeepSeek, Ollama, etc.)
+- ✅ Multi-agent coordination with collaborative capabilities
+- ✅ Persistent memory system with spatial awareness
+- ✅ Vision-based environment perception (screenshot analysis)
+- ✅ Web dashboard for real-time monitoring (localhost:3000)
+- ✅ Docker containerization for safe sandbox execution
+- ✅ Comprehensive task evaluation framework (MineCollab)
+- ✅ Customizable bot profiles and personality configurations
+
+### 🛠 Installation Requirements
+
+- **Minecraft Java Edition** (v1.21.6 recommended)
+- **Node.js** v18 or v20 LTS
+- **LLM API Key** (OpenAI, Claude, Gemini, etc.)
+
+For detailed setup instructions, see [Bot Guide](BOT_GUIDE.md).
+
+---
+
+## Tiếng Việt
+
+**CraftVN** là một framework agent AI tinh vi cho phép chơi game Minecraft tự động thông qua tích hợp mô hình ngôn ngữ nâng cao. Hệ thống kết hợp nhận thức môi trường thời gian thực, lập kế hoạch nhiệm vụ và hành vi thích ứng.
+
+### 📚 Tài Liệu
+
+- 📖 [Hướng Dẫn Bot](BOT_GUIDE.md)
+- ❓ [Câu Hỏi Thường Gặp](FAQ.md)
+- 🎯 [MineCollab Benchmark](minecollab.md)
+- ⚙️ [Cấu Hình](settings.js)
+- 📋 [Quy Tắc Phát Triển](AGENT_RULES.md)
+
+> [!Caution]
+> **Cảnh Báo Bảo Mật**: Không kết nối với các server không được tin tưởng khi `allow_insecure_coding: true`. Thực thi code bị **tắt mặc định** vì an toàn.
+
+### ⚡ Hướng Dẫn Nhanh
+
 ```bash
-docker-compose up --build
+# 1. Cài đặt các phụ thuộc
+npm install
+
+# 2. Cấu hình khóa API
+cp keys.example.json keys.json
+# Chỉnh sửa keys.json với thông tin xác thực LLM của bạn
+
+# 3. Khởi động Minecraft trên localhost:55916 (LAN)
+
+# 4. Chạy agent
+node main.js
 ```
 
-When running in docker, if you want the bot to join your local minecraft server, you have to use a special host address `host.docker.internal` to call your localhost from inside your docker container. Put this into your [settings.js](settings.js):
+### 🎯 Tính Năng
 
-```javascript
-"host": "host.docker.internal", // instead of "localhost", to join your local minecraft from inside the docker container
-```
+- ✅ Hỗ trợ 15+ nhà cung cấp LLM (OpenAI, Claude, Gemini, Groq, DeepSeek, Ollama, v.v.)
+- ✅ Phối hợp đa agent với khả năng cộng tác
+- ✅ Hệ thống bộ nhớ bền vững với nhận thức không gian
+- ✅ Nhận thức môi trường dựa trên thị giác (phân tích ảnh chụp màn hình)
+- ✅ Bảng điều khiển web để giám sát thời gian thực (localhost:3000)
+- ✅ Containerization Docker cho thực thi sandbox an toàn
+- ✅ Framework đánh giá tác vụ toàn diện (MineCollab)
+- ✅ Configuration profile bot tùy chỉnh và tính cách
 
-To connect to an unsupported minecraft version, you can try to use [viaproxy](services/viaproxy/README.md)
+### 🛠 Yêu Cầu Cài Đặt
 
-# Bot Profiles
+- **Minecraft Java Edition** (v1.21.6 được khuyên dùng)
+- **Node.js** v18 hoặc v20 LTS
+- **LLM API Key** (OpenAI, Claude, Gemini, v.v.)
 
-Bot profiles are json files (such as `andy.json`) that define:
-
-1. Bot backend LLMs to use for talking, coding, and embedding.
-2. Prompts used to influence the bot's behavior.
-3. Examples help the bot perform tasks.
-
-## Model Specifications
-
-LLM models can be specified simply as `"model": "gpt-4o"`, or more specifically with `"{api}/{model}"`, like `"openrouter/google/gemini-2.5-pro"`. See all supported APIs [here](#model-customization).
-
-The `model` field can be a string or an object. A model object must specify an `api`, and optionally a `model`, `url`, and additional `params`. You can also use different models/providers for chatting, coding, vision, embedding, and voice synthesis. See the example below.
-
-```json
-"model": {
-  "api": "openai",
-  "model": "gpt-4o",
-  "url": "https://api.openai.com/v1/",
-  "params": {
-    "max_tokens": 1000,
-    "temperature": 1
-  }
-},
-"code_model": {
-  "api": "openai",
-  "model": "gpt-4",
-  "url": "https://api.openai.com/v1/"
-},
-"vision_model": {
-  "api": "openai",
-  "model": "gpt-4o",
-  "url": "https://api.openai.com/v1/"
-},
-"embedding": {
-  "api": "openai",
-  "url": "https://api.openai.com/v1/",
-  "model": "text-embedding-ada-002"
-},
-"speak_model": "openai/tts-1/echo"
-```
-
-`model` is used for chat, `code_model` is used for newAction coding, `vision_model` is used for image interpretation, `embedding` is used to embed text for example selection, and `speak_model` is used for voice synthesis. `model` will be used by default for all other models if not specified. Not all APIs support embeddings, vision, or voice synthesis.
-
-All apis have default models and urls, so those fields are optional. The `params` field is optional and can be used to specify additional parameters for the model. It accepts any key-value pairs supported by the api. Is not supported for embedding models.
-
-## Embedding Models
-
-Embedding models are used to embed and efficiently select relevant examples for conversation and coding.
-
-Supported Embedding APIs: `openai`, `google`, `replicate`, `huggingface`, `novita`
-
-If you try to use an unsupported model, then it will default to a simple word-overlap method. Expect reduced performance. We recommend using supported embedding APIs.
-
-## Voice Synthesis Models
-
-Voice synthesis models are used to narrate bot responses and specified with `speak_model`. This field is parsed differently than other models and only supports strings formatted as `"{api}/{model}/{voice}"`, like `"openai/tts-1/echo"`. We only support `openai` and `google` for voice synthesis.
-
-## Specifying Profiles via Command Line
-
-By default, the program will use the profiles specified in `settings.js`. You can specify one or more agent profiles using the `--profiles` argument: `node main.js --profiles ./profiles/andy.json ./profiles/jill.json`
-
-
-# Contributing
-
-We welcome contributions to the project! We are generally less responsive to github issues, and more responsive to pull requests. Join the [discord](https://discord.gg/mp73p35dzC) for more active support and direction.
-
-While AI generated code is allowed, please vet it carefully. Submitting tons of sloppy code and documentation actively harms development.
-
-## Patches
-
-Some of the node modules that we depend on have bugs in them. To add a patch, change your local node module file and run `npx patch-package [package-name]`
-
-## Development Team
-Project developed and maintained by the CraftVN team.
-# craftVN-
+Để biết hướng dẫn thiết lập chi tiết, xem [Hướng Dẫn Bot](BOT_GUIDE.md).
