@@ -1,116 +1,116 @@
-# QUY TẮC LÀM VIỆC CHO AI AGENT
+﻿# QUY Tß║«C L├ÇM VIß╗åC CHO AI AGENT
 
-> Bất kỳ AI agent nào làm việc trên project này phải đọc file này trước.
-
----
-
-## 1. THÁI ĐỘ LÀM VIỆC
-
-### Trung thực
-- Có sao nói vậy. Code có bug thì nói thẳng là bug.
-- Không phóng đại. Mô tả đúng mức độ thực tế của code, không gọi 1 object đơn giản là "advanced architecture".
-- Nhận sai khi sai. Viết lỗi thì thừa nhận, không sửa lặng lẽ.
-
-### Phản biện
-- User yêu cầu điều sẽ gây hại cho project → giải thích rõ tại sao và đề xuất cách tốt hơn. Không im lặng làm theo.
-- Thấy cách làm tốt hơn → nói ra. Yêu cầu mơ hồ → hỏi lại. Scope quá lớn → đề nghị chia nhỏ.
-- Khi không chắc → hỏi user thay vì đoán. Hỏi không được → ghi lại và chờ, không tự ý sửa.
-
-### Góc nhìn thực tế và đa chiều
-- Khi đánh giá code, xem xét từ nhiều góc: hiệu năng, edge case, trải nghiệm người dùng cuối, khả năng maintain.
-- Không chỉ nhìn "code có chạy không" mà còn "code có gây vấn đề gì về sau không".
-- Căn cứ vào phản ánh thực tế của người dùng khi sử dụng sản phẩm để đánh giá, không chỉ dựa trên lý thuyết.
+> Bß║Ñt kß╗│ AI agent n├áo l├ám viß╗çc tr├¬n project n├áy phß║úi ─æß╗ìc file n├áy tr╞░ß╗¢c.
 
 ---
 
-## 2. HIỂU TRƯỚC KHI LÀM
+## 1. TH├üI ─Éß╗ÿ L├ÇM VIß╗åC
 
-1. **Đọc cấu trúc thư mục** trước mỗi lần làm việc.
-2. **Đọc toàn bộ file cần sửa** — không đoán nội dung.
-3. **Xác định import/dependency chain** — sửa 1 file có thể phá nhiều file khác.
-4. **Trace luồng chạy** từ đầu đến cuối trước khi sửa.
+### Trung thß╗▒c
+- C├│ sao n├│i vß║¡y. Code c├│ bug th├¼ n├│i thß║│ng l├á bug.
+- Kh├┤ng ph├│ng ─æß║íi. M├┤ tß║ú ─æ├║ng mß╗⌐c ─æß╗Ö thß╗▒c tß║┐ cß╗ºa code, kh├┤ng gß╗ìi 1 object ─æ╞ín giß║ún l├á "advanced architecture".
+- Nhß║¡n sai khi sai. Viß║┐t lß╗ùi th├¼ thß╗½a nhß║¡n, kh├┤ng sß╗¡a lß║╖ng lß║╜.
 
-### Nguyên tắc
-- Không di chuyển, đổi tên, xóa file trừ khi user yêu cầu rõ ràng.
-- Không tự ý merge/split file — mỗi file hiện tại có lý do tồn tại.
-- Khi project đã thay đổi cấu trúc, khảo sát lại thực tế, không áp đặt cấu trúc cũ.
+### Phß║ún biß╗çn
+- User y├¬u cß║ºu ─æiß╗üu sß║╜ g├óy hß║íi cho project ΓåÆ giß║úi th├¡ch r├╡ tß║íi sao v├á ─æß╗ü xuß║Ñt c├ích tß╗æt h╞ín. Kh├┤ng im lß║╖ng l├ám theo.
+- Thß║Ñy c├ích l├ám tß╗æt h╞ín ΓåÆ n├│i ra. Y├¬u cß║ºu m╞í hß╗ô ΓåÆ hß╗Åi lß║íi. Scope qu├í lß╗¢n ΓåÆ ─æß╗ü nghß╗ï chia nhß╗Å.
+- Khi kh├┤ng chß║»c ΓåÆ hß╗Åi user thay v├¼ ─æo├ín. Hß╗Åi kh├┤ng ─æ╞░ß╗úc ΓåÆ ghi lß║íi v├á chß╗¥, kh├┤ng tß╗▒ ├╜ sß╗¡a.
 
----
-
-## 3. KHÔNG FAKE CODE
-
-### Cấm tuyệt đối
-- Hàm rỗng (`function doThing() {}`)
-- TODO không implement (`// TODO: add logic`)
-- Return giả (`return { success: true }` mà không làm gì)
-- Catch rỗng (`catch(err) {}` — lỗi bị nuốt, debug không được)
-- Console.log thay logic thật
-
-### Bắt buộc
-- Mỗi function phải có logic thực sự chạy được.
-- Mỗi `try` phải có `catch` xử lý lỗi thật: log + return giá trị có nghĩa.
-- Mỗi `async` function phải có `await` đúng chỗ.
+### G├│c nh├¼n thß╗▒c tß║┐ v├á ─æa chiß╗üu
+- Khi ─æ├ính gi├í code, xem x├⌐t tß╗½ nhiß╗üu g├│c: hiß╗çu n─âng, edge case, trß║úi nghiß╗çm ng╞░ß╗¥i d├╣ng cuß╗æi, khß║ú n─âng maintain.
+- Kh├┤ng chß╗ë nh├¼n "code c├│ chß║íy kh├┤ng" m├á c├▓n "code c├│ g├óy vß║Ñn ─æß╗ü g├¼ vß╗ü sau kh├┤ng".
+- C─ân cß╗⌐ v├áo phß║ún ├ính thß╗▒c tß║┐ cß╗ºa ng╞░ß╗¥i d├╣ng khi sß╗¡ dß╗Ñng sß║ún phß║⌐m ─æß╗â ─æ├ính gi├í, kh├┤ng chß╗ë dß╗▒a tr├¬n l├╜ thuyß║┐t.
 
 ---
 
-## 4. KHÔNG ĐƠN GIẢN HÓA KHI KHÔNG CẦN
+## 2. HIß╗éU TR╞»ß╗ÜC KHI L├ÇM
 
-- Code cũ có N điều kiện check → code mới phải giữ ≥ N điều kiện.
-- Không xóa timeout, error handling, fallback "cho gọn".
-- Chỉ được đơn giản hóa khi user yêu cầu VÀ đã hiểu hậu quả.
-- Không xóa code "trông thừa" — có thể nó xử lý edge case chưa thấy.
+1. **─Éß╗ìc cß║Ñu tr├║c th╞░ mß╗Ñc** tr╞░ß╗¢c mß╗ùi lß║ºn l├ám viß╗çc.
+2. **─Éß╗ìc to├án bß╗Ö file cß║ºn sß╗¡a** ΓÇö kh├┤ng ─æo├ín nß╗Öi dung.
+3. **X├íc ─æß╗ïnh import/dependency chain** ΓÇö sß╗¡a 1 file c├│ thß╗â ph├í nhiß╗üu file kh├íc.
+4. **Trace luß╗ông chß║íy** tß╗½ ─æß║ºu ─æß║┐n cuß╗æi tr╞░ß╗¢c khi sß╗¡a.
 
----
-
-## 5. QUY TRÌNH SỬA CODE
-
-### Trước khi sửa
-1. Đọc toàn bộ file.
-2. Hiểu mọi function làm gì.
-3. Xác định file nào depend vào file này.
-4. Xác định chính xác dòng cần sửa và lý do.
-5. Kiểm tra có phá import chain không.
-6. Mới sửa.
-
-### Không được làm khi sửa
-- Không "refactor" nếu user không yêu cầu.
-- Không đổi function signature (thêm/bớt params, đổi return type) mà không update mọi nơi gọi.
-- Không đổi export/import pattern.
+### Nguy├¬n tß║»c
+- Kh├┤ng di chuyß╗ân, ─æß╗òi t├¬n, x├│a file trß╗½ khi user y├¬u cß║ºu r├╡ r├áng.
+- Kh├┤ng tß╗▒ ├╜ merge/split file ΓÇö mß╗ùi file hiß╗çn tß║íi c├│ l├╜ do tß╗ôn tß║íi.
+- Khi project ─æ├ú thay ─æß╗òi cß║Ñu tr├║c, khß║úo s├ít lß║íi thß╗▒c tß║┐, kh├┤ng ├íp ─æß║╖t cß║Ñu tr├║c c┼⌐.
 
 ---
 
-## 6. CHECKLIST TRƯỚC KHI SUBMIT
+## 3. KH├öNG FAKE CODE
 
-- [ ] Đã đọc toàn bộ file trước khi sửa?
-- [ ] Code mới thực sự chạy được? (không phải placeholder)
-- [ ] Có xóa hoặc đơn giản hóa logic nào không? Nếu có — giải thích được lý do?
-- [ ] Error handling đầy đủ?
-- [ ] Import chain có bị phá không?
-- [ ] Có thể crash từ code mới không?
-- [ ] Tên function/variable đúng convention của project?
-- [ ] Đã giải thích cho user những gì thay đổi?
+### Cß║Ñm tuyß╗çt ─æß╗æi
+- H├ám rß╗ùng (`function doThing() {}`)
+- TODO kh├┤ng implement (`// TODO: add logic`)
+- Return giß║ú (`return { success: true }` m├á kh├┤ng l├ám g├¼)
+- Catch rß╗ùng (`catch(err) {}` ΓÇö lß╗ùi bß╗ï nuß╗æt, debug kh├┤ng ─æ╞░ß╗úc)
+- Console.log thay logic thß║¡t
 
----
-
-## 7. THÊM TÍNH NĂNG MỚI
-
-1. Xác định feature thuộc layer/module nào.
-2. Đọc 2-3 functions tương tự đã có trong file đó.
-3. Copy pattern, thay logic bên trong.
-4. Thêm vào cuối file, không chen giữa code cũ.
-5. Tên phải mô tả đúng chức năng — không hầm hố.
+### Bß║»t buß╗Öc
+- Mß╗ùi function phß║úi c├│ logic thß╗▒c sß╗▒ chß║íy ─æ╞░ß╗úc.
+- Mß╗ùi `try` phß║úi c├│ `catch` xß╗¡ l├╜ lß╗ùi thß║¡t: log + return gi├í trß╗ï c├│ ngh─⌐a.
+- Mß╗ùi `async` function phß║úi c├│ `await` ─æ├║ng chß╗ù.
 
 ---
 
-## 8. KHI KHÔNG CHẮC CHẮN
+## 4. KH├öNG ─É╞áN GIß║óN H├ôA KHI KH├öNG Cß║ªN
 
-1. Hỏi user thay vì đoán.
-2. Không hỏi được → không sửa, ghi lại cần làm gì.
-3. Scope quá lớn → chia nhỏ.
-4. Không hiểu code cũ → đọc lại, không viết lại "cho đơn giản".
-5. Có 2 cách → chọn cách ít thay đổi code cũ hơn.
-6. User yêu cầu điều có hại → giải thích tại sao, đề xuất thay thế.
+- Code c┼⌐ c├│ N ─æiß╗üu kiß╗çn check ΓåÆ code mß╗¢i phß║úi giß╗» ΓëÑ N ─æiß╗üu kiß╗çn.
+- Kh├┤ng x├│a timeout, error handling, fallback "cho gß╗ìn".
+- Chß╗ë ─æ╞░ß╗úc ─æ╞ín giß║ún h├│a khi user y├¬u cß║ºu V├Ç ─æ├ú hiß╗âu hß║¡u quß║ú.
+- Kh├┤ng x├│a code "tr├┤ng thß╗½a" ΓÇö c├│ thß╗â n├│ xß╗¡ l├╜ edge case ch╞░a thß║Ñy.
 
 ---
 
-*File này áp dụng chung cho mọi dự án. Agent tự khảo sát cấu trúc thực tế của từng project trước khi làm việc.*
+## 5. QUY TR├îNH Sß╗¼A CODE
+
+### Tr╞░ß╗¢c khi sß╗¡a
+1. ─Éß╗ìc to├án bß╗Ö file.
+2. Hiß╗âu mß╗ìi function l├ám g├¼.
+3. X├íc ─æß╗ïnh file n├áo depend v├áo file n├áy.
+4. X├íc ─æß╗ïnh ch├¡nh x├íc d├▓ng cß║ºn sß╗¡a v├á l├╜ do.
+5. Kiß╗âm tra c├│ ph├í import chain kh├┤ng.
+6. Mß╗¢i sß╗¡a.
+
+### Kh├┤ng ─æ╞░ß╗úc l├ám khi sß╗¡a
+- Kh├┤ng "refactor" nß║┐u user kh├┤ng y├¬u cß║ºu.
+- Kh├┤ng ─æß╗òi function signature (th├¬m/bß╗¢t params, ─æß╗òi return type) m├á kh├┤ng update mß╗ìi n╞íi gß╗ìi.
+- Kh├┤ng ─æß╗òi export/import pattern.
+
+---
+
+## 6. CHECKLIST TR╞»ß╗ÜC KHI SUBMIT
+
+- [ ] ─É├ú ─æß╗ìc to├án bß╗Ö file tr╞░ß╗¢c khi sß╗¡a?
+- [ ] Code mß╗¢i thß╗▒c sß╗▒ chß║íy ─æ╞░ß╗úc? (kh├┤ng phß║úi placeholder)
+- [ ] C├│ x├│a hoß║╖c ─æ╞ín giß║ún h├│a logic n├áo kh├┤ng? Nß║┐u c├│ ΓÇö giß║úi th├¡ch ─æ╞░ß╗úc l├╜ do?
+- [ ] Error handling ─æß║ºy ─æß╗º?
+- [ ] Import chain c├│ bß╗ï ph├í kh├┤ng?
+- [ ] C├│ thß╗â crash tß╗½ code mß╗¢i kh├┤ng?
+- [ ] T├¬n function/variable ─æ├║ng convention cß╗ºa project?
+- [ ] ─É├ú giß║úi th├¡ch cho user nhß╗»ng g├¼ thay ─æß╗òi?
+
+---
+
+## 7. TH├èM T├ìNH N─éNG Mß╗ÜI
+
+1. X├íc ─æß╗ïnh feature thuß╗Öc layer/module n├áo.
+2. ─Éß╗ìc 2-3 functions t╞░╞íng tß╗▒ ─æ├ú c├│ trong file ─æ├│.
+3. Copy pattern, thay logic b├¬n trong.
+4. Th├¬m v├áo cuß╗æi file, kh├┤ng chen giß╗»a code c┼⌐.
+5. T├¬n phß║úi m├┤ tß║ú ─æ├║ng chß╗⌐c n─âng ΓÇö kh├┤ng hß║ºm hß╗æ.
+
+---
+
+## 8. KHI KH├öNG CHß║«C CHß║«N
+
+1. Hß╗Åi user thay v├¼ ─æo├ín.
+2. Kh├┤ng hß╗Åi ─æ╞░ß╗úc ΓåÆ kh├┤ng sß╗¡a, ghi lß║íi cß║ºn l├ám g├¼.
+3. Scope qu├í lß╗¢n ΓåÆ chia nhß╗Å.
+4. Kh├┤ng hiß╗âu code c┼⌐ ΓåÆ ─æß╗ìc lß║íi, kh├┤ng viß║┐t lß║íi "cho ─æ╞ín giß║ún".
+5. C├│ 2 c├ích ΓåÆ chß╗ìn c├ích ├¡t thay ─æß╗òi code c┼⌐ h╞ín.
+6. User y├¬u cß║ºu ─æiß╗üu c├│ hß║íi ΓåÆ giß║úi th├¡ch tß║íi sao, ─æß╗ü xuß║Ñt thay thß║┐.
+
+---
+
+*File n├áy ├íp dß╗Ñng chung cho mß╗ìi dß╗▒ ├ín. Agent tß╗▒ khß║úo s├ít cß║Ñu tr├║c thß╗▒c tß║┐ cß╗ºa tß╗½ng project tr╞░ß╗¢c khi l├ám viß╗çc.*
